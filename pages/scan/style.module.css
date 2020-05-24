@@ -1,0 +1,17 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+}
+
+.header {
+  text-align: center;
+  max-width: 350px;
+  margin: 20px 0;
+}
+
+.qr {
+  width: 90%;
+  max-width: 375px;
+  margin: 20px 10px;
+}
