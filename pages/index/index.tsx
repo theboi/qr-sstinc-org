@@ -42,7 +42,7 @@ export default function App() {
           // let token = result.credential;
         }
         let user = result.user;
-        console.log(user);
+        // console.log(user);
         db.collection(`users`)
           .add({
             displayName: user.displayName,
@@ -89,8 +89,8 @@ export default function App() {
             const message = new Date().getDate();
             const nonce = "sstinc";
             const hashed = sha256(nonce + message).toString();
-            // if (result === hashed) {
-            if (result !== null) {
+            if (result === hashed) {
+            // if (result !== null) {
               console.log("pass");
               var provider = new firebase.auth.GoogleAuthProvider();
               firebase.auth().signInWithRedirect(provider);
@@ -118,7 +118,7 @@ export default function App() {
       </div>
       <p className={style.about}>
         Created by <a href="https://ryanthe.com">Ryan The</a> from SST Inc. |
-        2020
+        2020 | v1.0
       </p>
     </div>
   );
