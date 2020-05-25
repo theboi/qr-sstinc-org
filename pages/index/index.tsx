@@ -12,7 +12,9 @@ import "firebase/firestore";
 const QrReader = dynamic(() => import("react-qr-reader"), { ssr: false });
 
 export default function App() {
-  const [debugMessage, updateDebugMessage] = useState(`If you're reading this its too late...`);
+  const [debugMessage, updateDebugMessage] = useState(
+    `If you're reading this its too late...`
+  );
 
   useEffect(() => {
     const firebaseConfig = {
