@@ -12,11 +12,11 @@ import "firebase/firestore";
 const QrReader = dynamic(() => import("react-qr-reader"), { ssr: false });
 
 export default function App() {
-  const [debugMessage, updateDebugMessage] = useState(``)
+  const [debugMessage, updateDebugMessage] = useState(`If you're reading this its too late...`);
 
   useEffect(() => {
     const firebaseConfig = {
-      apiKey: "AIzaSyBPK3akiGwl9Kv9JP1rWOrJBN-G8GXCXus",
+      apiKey: process.env.GOOGLE_API_KEY,
       authDomain: "qr-sstinc-org.firebaseapp.com",
       databaseURL: "https://qr-sstinc-org.firebaseio.com",
       projectId: "qr-sstinc-org",
@@ -45,14 +45,14 @@ export default function App() {
           .add({
             displayName: user.displayName,
             emailAddress: user.email,
-            date: firebase.firestore.Timestamp.fromDate(new Date())
+            date: firebase.firestore.Timestamp.fromDate(new Date()),
           })
           .then((docRef) => {
-            updateDebugMessage(`Successful document written with ID: ${docRef.id}`)
+            updateDebugMessage(`Success: ${docRef.id}`);
             console.log(`Successful document written with ID: ${docRef.id}`);
           })
           .catch((error) => {
-            updateDebugMessage(`Error adding document: ${error}`)
+            updateDebugMessage(`Error: ${error}`);
             console.error(`Error adding document: ${error}`);
           });
       })
@@ -63,28 +63,61 @@ export default function App() {
 
   return (
     <div className={style.main}>
-      <h1 className={style.header}>Attendance Scanner</h1>
-      <QrReader
-        delay={500}
-        onError={(error: Error) => {
-          console.error(`${error}`)
-          if (error.name === "NotAllowedError") return updateDebugMessage(`Error: Please enable your camera`)
-          updateDebugMessage(`Error: ${error.name}`)
-        }}
-        onScan={(result) => {
-          const message = new Date().getDate();
-          const nonce = "sstinc";
-          const hashed = sha256(nonce + message).toString();
-          // if (result === hashed) {
-          if (result !== null) {
-            console.log("pass");
-            var provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithRedirect(provider);
-          }
-        }}
-        className={style.qr}
+      <img
+        src="/assets/sstinc-icon.png"
+        alt="SST Inc. Icon"
+        width={100}
+        height={100}
       />
-      <p>{debugMessage}</p>
+      <div className={style.content}>
+        <h3 className={style.header}>SST Inc. Attendance Scanner</h3>
+        <p className={style.desc}>
+          Kindy scan the given QR code below. A prompt will appear if
+          successful.
+        </p>
+        <QrReader
+          delay={500}
+          onError={(error: Error) => {
+            console.error(`${error}`);
+            if (error.name === "NotAllowedError")
+              return updateDebugMessage(`Error: Please enable your camera`);
+            updateDebugMessage(`Error: ${error.name}`);
+          }}
+          onScan={(result) => {
+            const message = new Date().getDate();
+            const nonce = "sstinc";
+            const hashed = sha256(nonce + message).toString();
+            // if (result === hashed) {
+            if (result !== null) {
+              console.log("pass");
+              var provider = new firebase.auth.GoogleAuthProvider();
+              firebase.auth().signInWithRedirect(provider);
+            }
+          }}
+          className={style.qr}
+        />
+        <p
+          className={style.debug}
+          style={{
+            backgroundColor: (() => {
+              switch (debugMessage.split(":")[0]) {
+                case "Error":
+                  return "red";
+                case "Success":
+                  return "green";
+                default:
+                  return "transparent";
+              }
+            })(),
+          }}
+        >
+          {debugMessage}
+        </p>
+      </div>
+      <p className={style.about}>
+        Created by <a href="https://ryanthe.com">Ryan The</a> from SST Inc. |
+        2020
+      </p>
     </div>
   );
 }
