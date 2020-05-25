@@ -44,8 +44,8 @@
   width: 90%;
   max-width: 375px;
   padding: 0;
-  margin: 20px 0;
-  border-radius: 50px;
+  margin: 20px 0 20px 0;
+  border-radius: 20px;
   overflow: hidden;
-  border: 7px solid rgb(29, 29, 29);
+  border: 1px solid rgb(60, 60, 60);
 }
