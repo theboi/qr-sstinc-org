@@ -6,9 +6,9 @@ A QR code scanner webpage to mark attendance for SST Inc. members. Made using Ne
 
 ## Installation (for development by SST Inc. members)
 
-- Clone (or download) the project from GitHub
-- Install npm if you have yet to
-- In the terminal, navigate to the project directory and run,
+- Clone (or download) the project from GitHub.
+- Install npm if you have yet to.
+- In the terminal, navigate to the project directory and run:
 ```shell
 npm i
 ```
