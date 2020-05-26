@@ -1,7 +1,7 @@
 {
   "build": {
     "env": {
-      "GOOGLE_API_KEY": "@google_api_key"
+      "GOOGLE_API_KEY": "@google-api-key-production-n3zb"
     }
   }
 }
