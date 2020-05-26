@@ -1,6 +1,5 @@
 {
   "env": {
-    "TEST": "test",
-    "SECRET": "@test"
+    "GOOGLE_API_KEY": "@GOOGLE_API_KEY"
   }
 }
