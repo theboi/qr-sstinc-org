@@ -1,0 +1,6 @@
+{
+  "env": {
+    "TEST": "test",
+    "SECRET": "@test"
+  }
+}
