@@ -1,5 +1,7 @@
 {
-  "env": {
-    "GOOGLE_API_KEY": "@google_api_key"
+  "build": {
+    "env": {
+      "GOOGLE_API_KEY": "@google_api_key"
+    }
   }
 }

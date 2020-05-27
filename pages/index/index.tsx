@@ -67,12 +67,12 @@ export default function App() {
     <div className={style.main}>
       <img
         src="/assets/sstinc-icon.png"
-        alt="SST Inc. Icon"
+        alt="SST Inc Icon"
         width={100}
         height={100}
       />
       <div className={style.content}>
-        <h3 className={style.header}>SST Inc. Attendance Scanner</h3>
+        <h3 className={style.header}>SST Inc Attendance Scanner</h3>
         <p className={style.desc}>
           Kindy scan the given QR code below. A prompt will appear if
           successful.
@@ -83,6 +83,8 @@ export default function App() {
             console.error(`${error}`);
             if (error.name === "NotAllowedError")
               return updateDebugMessage(`Error: Please enable your camera`);
+            else if (error.name === "NoVideoInputDevicesError")
+              return updateDebugMessage(`Error: No camera found (Please use Safari if on iOS)`);
             updateDebugMessage(`Error: ${error.name}`);
           }}
           onScan={(result) => {
@@ -90,7 +92,7 @@ export default function App() {
             const nonce = "sstinc";
             const hashed = sha256(nonce + message).toString();
             if (result === hashed) {
-            // if (result !== null) {
+              // if (result !== null) {
               console.log("pass");
               var provider = new firebase.auth.GoogleAuthProvider();
               firebase.auth().signInWithRedirect(provider);
@@ -117,8 +119,11 @@ export default function App() {
         </p>
       </div>
       <p className={style.about}>
-        Created by <a href="https://ryanthe.com">Ryan The</a> from SST Inc. |
-        2020 | v1.0
+        Created by{" "}
+        <a className={style.link} href="https://ryanthe.com">
+          Ryan The
+        </a>{" "}
+        from SST Inc | 2020 | v1.0
       </p>
     </div>
   );
