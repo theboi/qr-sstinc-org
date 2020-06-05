@@ -2,29 +2,58 @@
   display: flex;
   flex-direction: column;
   place-items: center;
+  text-align: center;
 }
 
-.content {
-  padding: 5px;
+.contentDiv {
+  padding: 30px 10px;
   margin: 0 10px;
-  border: solid rgb(201, 201, 201) 1px;
+  border: solid #fefefe 1px;
   border-radius: 10px;
+  box-shadow: 0 0 10px 5px #eeeeee;
   display: flex;
   flex-direction: column;
   place-items: center;
+  width: 90vw;
+  max-width: 700px;
+  position: relative;
+  background-color: #fcfcfc;
 }
 
-.header {
-  text-align: center;
-  max-width: 200px;
-  margin-top: 20px;
+.contentDiv > * {
+  margin: 5px 0;
 }
 
-.desc {
-  text-align: center;
-  margin-top: 10px;
-  max-width: 90%;
+/* Global */
+.smallText {
+  font-size: 12px;
+  margin: 10px 0;
 }
+
+.activeButton {
+  transition: all 100ms ease-in-out;
+  padding: 10px;
+  width: 100%;
+  border-radius: 10px;
+  border: none;
+  color: #fff;
+  background: linear-gradient(110deg, #030030 0%, #030030 50%, #00a4ff 50%, #0088ff 100%);
+  background-size: 250% 100%;
+  background-position: 100% 0%;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.activeButton:hover {
+  filter: brightness(95%);
+}
+
+.activeButton:active {
+  filter: brightness(90%);
+  background-position: 0% 0%;
+}
+
+/* Others */
 
 .debug {
   text-align: center;
@@ -33,11 +62,6 @@
   border-radius: 5px;
   color: white;
   margin-bottom: 20px;
-}
-
-.about {
-  margin: 25px 0;
-  text-align: center;
 }
 
 .qr {
@@ -50,12 +74,21 @@
   border: 1px solid rgb(60, 60, 60);
 }
 
+
+/* About */
+
+.about {
+  margin: 25px 0;
+  text-align: center;
+  font-size: 13px;
+}
+
 .link {
-  color: blue;
+  color: #ff6c2d;
 }
 
 .link:hover {
-  color: darkblue;
-  background-color: #bad7fb;
+  color: #bb5100;
   text-decoration: underline;
 }
+

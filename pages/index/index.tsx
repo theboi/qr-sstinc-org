@@ -65,15 +65,17 @@ export default function App() {
 
   return (
     <div className={style.main}>
-      <img
-        src="/assets/sstinc-icon.png"
-        alt="SST Inc Icon"
-        width={100}
-        height={100}
-      />
-      <div className={style.content}>
-        <h3 className={style.header}>SST Inc Attendance Scanner</h3>
-        <p className={style.desc}>
+      <a href="https://sstinc.org" rel="noreferrer noopener" target="_blank">
+        <img
+          src="/assets/sstinc-icon.png"
+          alt="SST Inc Icon"
+          width={100}
+          height={100}
+        />
+      </a>
+      <div className={style.contentDiv}>
+        <h3>SST Inc Attendance Scanner</h3>
+        <p>
           Kindy scan the given QR code below. A prompt will appear if
           successful.
         </p>
@@ -106,7 +108,7 @@ export default function App() {
             backgroundColor: (() => {
               switch (debugMessage.split(":")[0]) {
                 case "Error":
-                  return "red";
+                  return "#ff6c2d";
                 case "Success":
                   return "green";
                 default:
