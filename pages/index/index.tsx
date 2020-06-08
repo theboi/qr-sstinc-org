@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import style from "./style.module.css";
 import sha256 from "crypto-js/sha256";
@@ -37,6 +37,8 @@ export default function App() {
       .auth()
       .getRedirectResult()
       .then(function (result) {
+        loadingOverlayRef.current.style.display = "none";
+
         if (result.credential) {
           // This gives you a Google Access Token. You can use it to access the Google API.
           // let token = result.credential;
@@ -63,6 +65,8 @@ export default function App() {
       });
   });
 
+  let loadingOverlayRef = useRef(null)
+
   return (
     <div className={style.main}>
       <a href="https://sstinc.org" rel="noreferrer noopener" target="_blank">
@@ -86,7 +90,9 @@ export default function App() {
             if (error.name === "NotAllowedError")
               return updateDebugMessage(`Error: Please enable your camera`);
             else if (error.name === "NoVideoInputDevicesError")
-              return updateDebugMessage(`Error: No camera found (Please use Safari if on iOS)`);
+              return updateDebugMessage(
+                `Error: No camera found (Please use Safari if on iOS)`
+              );
             updateDebugMessage(`Error: ${error.name}`);
           }}
           onScan={(result) => {
@@ -119,6 +125,36 @@ export default function App() {
         >
           {debugMessage}
         </p>
+        <div className={style.loadingOverlay} ref={loadingOverlayRef}>
+          <svg
+            className={style.loadingCircle}
+            width="100"
+            height="100"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="xMidYMid"
+            display="block"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="none"
+              stroke="#ff4a22"
+              strokeWidth="10"
+              r="35"
+              strokeDasharray="164.93361431346415 56.97787143782138"
+              transform="rotate(287.844 50 50)"
+            >
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                repeatCount="indefinite"
+                dur="1s"
+                values="0 50 50;360 50 50"
+                keyTimes="0;1"
+              />
+            </circle>
+          </svg>
+        </div>
       </div>
       <p className={style.about}>
         Created by{" "}

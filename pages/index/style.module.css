@@ -53,6 +53,18 @@
   background-position: 0% 0%;
 }
 
+/* Loading */
+.loadingOverlay {
+  background-color: #ffffffe6;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+}
+
 /* Others */
 
 .debug {
@@ -76,7 +88,6 @@
 
 
 /* About */
-
 .about {
   margin: 25px 0;
   text-align: center;
@@ -84,11 +95,11 @@
 }
 
 .link {
-  color: #ff6c2d;
+  color: #ff4a22;
 }
 
 .link:hover {
-  color: #bb5100;
+  color: #c14300;
   text-decoration: underline;
 }
 
