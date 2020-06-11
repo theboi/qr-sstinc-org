@@ -3,7 +3,7 @@ Scan, Login, Check, so simple!
 
 ## About
 
-A QR code scanner site made for marking attendance during SST Inc sessions. Made with :heart: by Ryan The @theboi using Next.js, React and TypeScript. 
+A QR code scanner site made for marking attendance during SST Inc sessions. Made with :heart: by [Ryan The](https://ryanthe.com/) @theboi using Next.js, React and TypeScript.
 
 ## Installation (for development by SST Inc members)
 
