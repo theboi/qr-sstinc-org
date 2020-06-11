@@ -1,5 +1,5 @@
 # qr-sstinc-org
-Scan, Login, Check, so simple! (cringe)
+Scan, Login, Check, so simple!
 
 ## About
 
