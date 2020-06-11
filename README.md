@@ -1,14 +1,14 @@
 # qr-sstinc-org
+Scan, Login, Check, so simple! (cringe)
 
 ## About
 
-A QR code scanner webpage to mark attendance for SST Inc. members. Made using Next.js, React and TypeScript. Uses Google Account sign-in to mark attendance.
+A QR code scanner site made for marking attendance during SST Inc sessions. Made with :heart: by Ryan The @theboi using Next.js, React and TypeScript. 
 
-## Installation (for development by SST Inc. members)
+## Installation (for development by SST Inc members)
 
 - Clone (or download) the project from GitHub.
-- Install npm if you have yet to.
-- In the terminal, navigate to the project directory and run:
+- In the terminal, navigate to the project directory and run (you will need npm):
 ```shell
 npm i
 ```
