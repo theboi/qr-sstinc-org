@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import style from "./style.module.css";
-import sha256 from "crypto-js/sha256";
+import hash from "crypto-js/sha256";
 
 import * as firebase from "firebase/app";
 import "firebase/analytics";
@@ -31,7 +31,6 @@ export default function App() {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
-    let db = firebase.firestore();
 
     firebase
       .auth()
@@ -44,28 +43,48 @@ export default function App() {
           // let token = result.credential;
         }
         let user = result.user;
-        // console.log(user);
-        db.collection(`users`)
+        console.log(user);
+        firebase
+          .firestore()
+          .collection(`users`)
           .add({
             displayName: user.displayName,
             emailAddress: user.email,
             date: firebase.firestore.Timestamp.fromDate(new Date()),
           })
-          .then((docRef) => {
-            updateDebugMessage(`Success: ${docRef.id}`);
-            console.log(`Successful document written with ID: ${docRef.id}`);
-          })
-          .catch((error) => {
-            updateDebugMessage(`Error: ${error}`);
-            console.error(`Error adding document: ${error}`);
-          });
+        .then((docRef) => {
+          updateDebugMessage(`Success: ${docRef.id}`);
+          console.log(`Successful document written with ID: ${docRef.id}`);
+        })
+        .catch((error) => {
+          updateDebugMessage(`Error: ${error}`);
+          console.error(`Error adding document: ${error}`);
+        });
+
+        // firebase
+        //   .database()
+        //   .ref(`users/${user.uid}`)
+        //   .set({
+        //     email: user.email,
+        //     name: user.displayName,
+        //     date: firebase.database.ServerValue.TIMESTAMP,
+        //   })
+        //   .then((res) => {
+        //     console.log(res)
+        //     updateDebugMessage(`Success`);
+        //     console.log(`Success`);
+        //   })
+        //   .catch((err) => {
+        //     updateDebugMessage(`Error: ${err}`);
+        //     console.error(`Error adding document: ${err}`);
+        //   });
       })
       .catch(function (error) {
         console.warn(`${error.message} (Ignore if you have yet to log in)`);
       });
   });
 
-  let loadingOverlayRef = useRef(null)
+  let loadingOverlayRef = useRef(null);
 
   return (
     <div className={style.main}>
@@ -96,9 +115,7 @@ export default function App() {
             updateDebugMessage(`Error: ${error.name}`);
           }}
           onScan={(result) => {
-            const message = new Date().getDate();
-            const nonce = "sstinc";
-            const hashed = sha256(nonce + message).toString();
+            const hashed = hash("sstinc" + new Date().getDate()).toString();
             if (result === hashed) {
               // if (result !== null) {
               console.log("pass");
