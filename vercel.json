@@ -1,7 +1,8 @@
 {
   "build": {
     "env": {
-      "GOOGLE_API_KEY": "@google-api-key-production-n3zb"
+      "GOOGLE_API_KEY": "@google-api-key-production-n3zb",
+      "GCP_SERVICE_ACCOUNT_KEY": "@gcp-service-account-key-production-qh9q"
     }
   }
 }

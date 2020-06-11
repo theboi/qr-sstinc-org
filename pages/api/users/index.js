@@ -20,11 +20,16 @@ export default (req, res) => {
     credential: admin.credential.cert(serviceAccount)
   });
 
-  let db = admin.firestore();
-
   let output = ""
-  db.collection('users').get().then(col => {
-    output = col.docs.map(value => value.data())
+  admin.firestore().collection('users').get().then(col => {
+    output = col.docs.map(value => {
+      let data = value.data()
+      return {
+        timestamp: data.date.toDate().toString(),
+        email: data.emailAddress,
+        name: data.displayName
+      }
+    })
   }).then(() => {
     res.json(output)
   }).catch(err => {
