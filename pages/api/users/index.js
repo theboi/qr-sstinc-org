@@ -24,7 +24,7 @@ export default (req, res) => {
   admin.firestore().collection('users').get().then(col => {
     output = col.docs.map(value => {
       let data = value.data()
-      return {
+      output = {
         timestamp: data.date.toDate().toString(),
         email: data.emailAddress,
         name: data.displayName
