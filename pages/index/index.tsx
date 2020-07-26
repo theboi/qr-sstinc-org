@@ -52,14 +52,14 @@ export default function App() {
             emailAddress: user.email,
             date: firebase.firestore.Timestamp.fromDate(new Date()),
           })
-        .then((docRef) => {
-          updateDebugMessage(`Success: ${docRef.id}`);
-          console.log(`Successful document written with ID: ${docRef.id}`);
-        })
-        .catch((error) => {
-          updateDebugMessage(`Error: ${error}`);
-          console.error(`Error adding document: ${error}`);
-        });
+          .then((docRef) => {
+            updateDebugMessage(`Successful!`);
+            console.log(`Successful document written with ID: ${docRef.id}`);
+          })
+          .catch((error) => {
+            updateDebugMessage(`Error: ${error}`);
+            console.error(`Error adding document: ${error}`);
+          });
 
         // firebase
         //   .database()
@@ -115,9 +115,16 @@ export default function App() {
             updateDebugMessage(`Error: ${error.name}`);
           }}
           onScan={(result) => {
-            const hashed = hash("sstinc" + new Date().getDate()).toString();
+            const twoDigitify = (value: number) => {
+              ("0" + value.toString()).slice(-2);
+            };
+            const date = new Date();
+            const hashed = hash(
+              `sstinc${twoDigitify(date.getDate())}${twoDigitify(
+                date.getMonth()
+              )}${twoDigitify(date.getFullYear())}`
+            ).toString();
             if (result === hashed) {
-              // if (result !== null) {
               console.log("pass");
               var provider = new firebase.auth.GoogleAuthProvider();
               firebase.auth().signInWithRedirect(provider);
