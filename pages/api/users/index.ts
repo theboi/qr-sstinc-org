@@ -23,13 +23,13 @@ export default (req, res) => {
   admin.firestore().collection('users').get().then(col => {
     const output = col.docs.map(value => {
       let data = value.data()
+      const dateInSgt = data.date.toDate().toLocaleString("en-SG", {timeZone: 'Asia/Singapore'})
       return {
-        timestamp: data.date.toDate().toString(),
+        timestamp: `${dateInSgt} (SGT)`,
         email: data.emailAddress,
         name: data.displayName
       }
     })
-    console.log(output)
     res.json(output)
   }).catch((e: Error) => {
     console.error("ERROR", e)
