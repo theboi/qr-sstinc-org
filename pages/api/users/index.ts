@@ -25,10 +25,12 @@ export default (req, res) => {
   admin
     .firestore()
     .collection("users")
+    .orderBy("date", "desc")
     .get()
     .then((col) => {
       const output = col.docs.map((value) => {
         let data = value.data();
+
         return {
           "Timestamp (SGT)": data.date
             .toDate()
