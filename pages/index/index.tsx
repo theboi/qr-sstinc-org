@@ -53,11 +53,11 @@ export default function App() {
             date: firebase.firestore.Timestamp.fromDate(new Date()),
           })
           .then((docRef) => {
-            updateDebugMessage(`Successful!`);
+            updateDebugMessage(`Success`);
             console.log(`Successful document written with ID: ${docRef.id}`);
           })
           .catch((error) => {
-            updateDebugMessage(`Error: ${error}`);
+            updateDebugMessage(`Error`);
             console.error(`Error adding document: ${error}`);
           });
 
@@ -136,7 +136,7 @@ export default function App() {
           className={style.debug}
           style={{
             backgroundColor: (() => {
-              switch (debugMessage.split(":")[0]) {
+              switch (debugMessage) {
                 case "Error":
                   return "#ff6c2d";
                 case "Success":
