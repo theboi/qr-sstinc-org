@@ -115,15 +115,15 @@ export default function App() {
             updateDebugMessage(`Error: ${error.name}`);
           }}
           onScan={(result) => {
-            const twoDigitify = (value: number) => {
+            const twoDigitify = (value: number) =>
               ("0" + value.toString()).slice(-2);
-            };
             const date = new Date();
             const hashed = hash(
-              `sstinc${twoDigitify(date.getDate()+1)}${twoDigitify(
-                date.getMonth()
+              `sstinc${twoDigitify(date.getDate())}${twoDigitify(
+                date.getMonth() + 1
               )}${twoDigitify(date.getFullYear())}`
             ).toString();
+            console.log(date.getMonth());
             if (result === hashed) {
               console.log("pass");
               var provider = new firebase.auth.GoogleAuthProvider();
