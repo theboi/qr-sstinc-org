@@ -120,7 +120,7 @@ export default function App() {
             };
             const date = new Date();
             const hashed = hash(
-              `sstinc${twoDigitify(date.getDate())}${twoDigitify(
+              `sstinc${twoDigitify(date.getDate()+1)}${twoDigitify(
                 date.getMonth()
               )}${twoDigitify(date.getFullYear())}`
             ).toString();
