@@ -25,6 +25,7 @@ export default function App() {
     `If you're reading this its too late...`
   );
   const [loginStatus, updateLoginStatus] = useState(LoginStatus.None);
+  const [isDoneLoading, setIsDoneLoading] = useState(false);
 
   useEffect(() => {
     const firebaseConfig = {
@@ -47,6 +48,7 @@ export default function App() {
       .getRedirectResult()
       .then(function (result) {
         loadingOverlayRef.current.style.display = "none";
+        setIsDoneLoading(true);
 
         if (result.credential) {
           // This gives you a Google Access Token. You can use it to access the Google API.
@@ -107,38 +109,40 @@ export default function App() {
             <div className={style.contentDiv}>
               <h3>SST Inc Attendance Scanner</h3>
               <p>Kindy scan the given QR code below to check-in to SST Inc.</p>
-              <QrReader
-                delay={500}
-                onError={(error: Error) => {
-                  console.error(error);
-                  if (error.name === "NotAllowedError")
-                    return updateDebugMessage(
-                      `Error: Camera Disabled`
-                    );
-                  else if (error.name === "NoVideoInputDevicesError")
-                    return updateDebugMessage(
-                      `Error: Camera Not Found (Use Safari if on iOS)`
-                    );
-                  updateDebugMessage(`Error: ${error.name}`);
-                }}
-                onScan={(result) => {
-                  const twoDigitify = (value: number) =>
-                    ("0" + value.toString()).slice(-2);
-                  const date = new Date();
-                  const hashed = hash(
-                    `sstinc${twoDigitify(date.getDate())}${twoDigitify(
-                      date.getMonth() + 1
-                    )}${twoDigitify(date.getFullYear())}`
-                  ).toString();
-                  console.log(date.getMonth());
-                  if (result === hashed) {
-                    console.log("pass");
-                    var provider = new firebase.auth.GoogleAuthProvider();
-                    firebase.auth().signInWithRedirect(provider);
-                  }
-                }}
-                className={style.qr}
-              />
+              {isDoneLoading ? (
+                <QrReader
+                  delay={500}
+                  onError={(error: Error) => {
+                    console.error(error);
+                    if (error.name === "NotAllowedError")
+                      return updateDebugMessage(`Error: Camera Disabled`);
+                    else if (error.name === "NoVideoInputDevicesError")
+                      return updateDebugMessage(
+                        `Error: Camera Not Found (Use Safari if on iOS)`
+                      );
+                    updateDebugMessage(`Error: ${error.name}`);
+                  }}
+                  onScan={(result) => {
+                    const twoDigitify = (value: number) =>
+                      ("0" + value.toString()).slice(-2);
+                    const date = new Date();
+                    const hashed = hash(
+                      `sstinc${twoDigitify(date.getDate())}${twoDigitify(
+                        date.getMonth() + 1
+                      )}${twoDigitify(date.getFullYear())}`
+                    ).toString();
+                    console.log(date.getMonth());
+                    if (result === hashed) {
+                      console.log("pass");
+                      var provider = new firebase.auth.GoogleAuthProvider();
+                      firebase.auth().signInWithRedirect(provider);
+                    }
+                  }}
+                  className={style.qr}
+                />
+              ) : (
+                <></>
+              )}
               <p
                 className={style.debug}
                 style={{
