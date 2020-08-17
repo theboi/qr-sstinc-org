@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
-import style from "./style.module.css";
-import hash from "crypto-js/sha256";
 
-import svgImages from "./svgImages";
+import style from "./style.module.css";
+import svgStyle from "./svgImages.module.css";
+
+import hash from "crypto-js/sha256";
 
 import * as firebase from "firebase/app";
 import "firebase/analytics";
@@ -18,6 +19,63 @@ enum LoginStatus {
   Fail,
   Success,
 }
+
+const svgImages = {
+  checkmark: (
+    <svg
+      className={svgStyle.image}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 52 52"
+    >
+      <circle className={svgStyle.circle} cx="26" cy="26" r="25" fill="none" />
+      <path
+        className={svgStyle.symbol}
+        fill="none"
+        d="M14.1 27.2l7.1 7.2 16.7-16.8"
+      />
+    </svg>
+  ),
+  cross: (
+    <svg
+      className={svgStyle.image}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 52 52"
+    >
+      <circle className={svgStyle.circle} cx="26" cy="26" r="25" fill="none" />
+      <line className={svgStyle.symbol} x1="35" y1="16" x2="16" y2="35"></line>
+      <line className={svgStyle.symbol} x1="16" y1="16" x2="35" y2="35"></line>
+    </svg>
+  ),
+  loading: (
+    <svg
+      width="100"
+      height="100"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="xMidYMid"
+      display="block"
+    >
+      <circle
+        cx="50"
+        cy="50"
+        fill="none"
+        stroke="#ff4a22"
+        strokeWidth="10"
+        r="35"
+        strokeDasharray="164.93361431346415 56.97787143782138"
+        transform="rotate(287.844 50 50)"
+      >
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          repeatCount="indefinite"
+          dur="1s"
+          values="0 50 50;360 50 50"
+          keyTimes="0;1"
+        />
+      </circle>
+    </svg>
+  ),
+};
 
 export default function App() {
   const [debugMessage, updateDebugMessage] = useState(
@@ -97,7 +155,11 @@ export default function App() {
               <h3>
                 {loginStatus === LoginStatus.Success ? "Success" : "Failed"}
               </h3>
-              <p>{loginStatus === LoginStatus.Success ? "You may leave the site now." : "Inform a SST Inc. EXCO and try again."}</p>
+              <p>
+                {loginStatus === LoginStatus.Success
+                  ? "You may leave the site now."
+                  : "Inform a SST Inc. EXCO and try again."}
+              </p>
               {loginStatus === LoginStatus.Success
                 ? svgImages.checkmark
                 : svgImages.cross}
@@ -166,7 +228,7 @@ export default function App() {
           <a className={style.link} href="https://ryanthe.com">
             Ryan The
           </a>{" "}
-          from SST Inc | 2020 | v1.3
+          from SST Inc | 2020 | v1.2
         </p>
       </div>
     </>
