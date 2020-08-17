@@ -3,12 +3,13 @@ import dynamic from "next/dynamic";
 import style from "./style.module.css";
 import hash from "crypto-js/sha256";
 
-import svgImages from "./svgImages"
+import svgImages from "./svgImages";
 
 import * as firebase from "firebase/app";
 import "firebase/analytics";
 import "firebase/auth";
 import "firebase/firestore";
+import { debug } from "console";
 
 // import QrReader from "react-qr-reader"
 const QrReader = dynamic(() => import("react-qr-reader"), { ssr: false });
@@ -23,7 +24,7 @@ export default function App() {
   const [debugMessage, updateDebugMessage] = useState(
     `If you're reading this its too late...`
   );
-  const [loginStatus, updateLoginStatus] = useState(LoginStatus.Success);
+  const [loginStatus, updateLoginStatus] = useState(LoginStatus.None);
 
   useEffect(() => {
     const firebaseConfig = {
@@ -92,29 +93,31 @@ export default function App() {
         loginStatus === LoginStatus.Fail ? (
           <>
             <div className={style.contentDiv}>
-              <h3>{loginStatus === LoginStatus.Success ? "Success" : "Failed"}</h3>
-              {loginStatus === LoginStatus.Success ? svgImages.checkmark : svgImages.cross}
+              <h3>
+                {loginStatus === LoginStatus.Success ? "Success" : "Failed"}
+              </h3>
+              {loginStatus === LoginStatus.Success
+                ? svgImages.checkmark
+                : svgImages.cross}
+              <p>You may leave the site now.</p>
             </div>
           </>
         ) : (
           <>
             <div className={style.contentDiv}>
               <h3>SST Inc Attendance Scanner</h3>
-              <p>
-                Kindy scan the given QR code below. A prompt will appear if
-                successful.
-              </p>
+              <p>Kindy scan the given QR code below to check-in to SST Inc.</p>
               <QrReader
                 delay={500}
                 onError={(error: Error) => {
                   console.error(error);
                   if (error.name === "NotAllowedError")
                     return updateDebugMessage(
-                      `Error: Please enable your camera`
+                      `Error: Camera Disabled`
                     );
                   else if (error.name === "NoVideoInputDevicesError")
                     return updateDebugMessage(
-                      `Error: No camera found (Please use Safari if on iOS)`
+                      `Error: Camera Not Found (Use Safari if on iOS)`
                     );
                   updateDebugMessage(`Error: ${error.name}`);
                 }}
@@ -139,49 +142,17 @@ export default function App() {
               <p
                 className={style.debug}
                 style={{
-                  backgroundColor: (() => {
-                    switch (debugMessage) {
-                      case "Error":
-                        return "#ff6c2d";
-                      case "Success":
-                        return "green";
-                      default:
-                        return "transparent";
-                    }
-                  })(),
+                  backgroundColor:
+                    debugMessage === `If you're reading this its too late...` ||
+                    debugMessage === ``
+                      ? "transparent"
+                      : "#ff6c2d",
                 }}
               >
                 {debugMessage}
               </p>
               <div className={style.loadingOverlay} ref={loadingOverlayRef}>
-                <svg
-                  className={style.loadingCircle}
-                  width="100"
-                  height="100"
-                  viewBox="0 0 100 100"
-                  preserveAspectRatio="xMidYMid"
-                  display="block"
-                >
-                  <circle
-                    cx="50"
-                    cy="50"
-                    fill="none"
-                    stroke="#ff4a22"
-                    strokeWidth="10"
-                    r="35"
-                    strokeDasharray="164.93361431346415 56.97787143782138"
-                    transform="rotate(287.844 50 50)"
-                  >
-                    <animateTransform
-                      attributeName="transform"
-                      type="rotate"
-                      repeatCount="indefinite"
-                      dur="1s"
-                      values="0 50 50;360 50 50"
-                      keyTimes="0;1"
-                    />
-                  </circle>
-                </svg>
+                {svgImages.loading}
               </div>
             </div>
           </>

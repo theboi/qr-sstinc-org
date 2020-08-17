@@ -26,4 +26,33 @@ export default {
       <line className={style.symbol} x1="16" y1="16" x2="35" y2="35"></line>
     </svg>
   ),
+  loading: (
+    <svg
+      width="100"
+      height="100"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="xMidYMid"
+      display="block"
+    >
+      <circle
+        cx="50"
+        cy="50"
+        fill="none"
+        stroke="#ff4a22"
+        strokeWidth="10"
+        r="35"
+        strokeDasharray="164.93361431346415 56.97787143782138"
+        transform="rotate(287.844 50 50)"
+      >
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          repeatCount="indefinite"
+          dur="1s"
+          values="0 50 50;360 50 50"
+          keyTimes="0;1"
+        />
+      </circle>
+    </svg>
+  ),
 };
