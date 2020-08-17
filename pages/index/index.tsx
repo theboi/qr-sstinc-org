@@ -9,7 +9,6 @@ import * as firebase from "firebase/app";
 import "firebase/analytics";
 import "firebase/auth";
 import "firebase/firestore";
-import { debug } from "console";
 
 // import QrReader from "react-qr-reader"
 const QrReader = dynamic(() => import("react-qr-reader"), { ssr: false });
@@ -167,7 +166,7 @@ export default function App() {
           <a className={style.link} href="https://ryanthe.com">
             Ryan The
           </a>{" "}
-          from SST Inc | 2020 | v1.0
+          from SST Inc | 2020 | v1.3
         </p>
       </div>
     </>
