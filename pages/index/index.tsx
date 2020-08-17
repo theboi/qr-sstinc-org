@@ -98,10 +98,10 @@ export default function App() {
               <h3>
                 {loginStatus === LoginStatus.Success ? "Success" : "Failed"}
               </h3>
+              <p>{loginStatus === LoginStatus.Success ? "You may leave the site now." : "Inform a SST Inc. EXCO and try again."}</p>
               {loginStatus === LoginStatus.Success
                 ? svgImages.checkmark
                 : svgImages.cross}
-              <p>You may leave the site now.</p>
             </div>
           </>
         ) : (
