@@ -232,7 +232,7 @@ export default function App() {
             >
               Ryan The
             </a>{" "}
-            from SST Inc, 2020, v1.2
+            from SST Inc, 2020, v1.2.
           </p>
           <p>
             Open sourced on{" "}
