@@ -222,14 +222,26 @@ export default function App() {
             </div>
           </>
         )}
-
-        <p className={style.about}>
-          Created by{" "}
-          <a className={style.link} href="https://ryanthe.com">
-            Ryan The
-          </a>{" "}
-          from SST Inc | 2020 | v1.2
-        </p>
+        <div className={style.credits}>
+          <p>
+            Made with ♥ by{" "}
+            <a
+              href="https://www.ryanthe.com"
+              target="_blank"
+              className={style.link}
+            >
+              Ryan The
+            </a>{" "}
+            from SST Inc, 2020, v1.2
+          </p>
+          <p>
+            Open sourced on{" "}
+            <a href="https://github.com/theboi/qr-sstinc-org" target="_blank" className={style.link}>
+              GitHub
+            </a>
+            .{" "}
+          </p>
+        </div>
       </div>
     </>
   );
