@@ -169,10 +169,10 @@ export default function App() {
           <>
             <div className={style.contentDiv}>
               <h3>SST Inc Attendance Scanner</h3>
-              <p>Kindy scan the given QR code below to check-in to SST Inc.</p>
+              <p>Kindy scan the QR code provided to check-in to SST Inc.</p>
               {isDoneLoading ? (
                 <QrReader
-                  delay={500}
+                  delay={1000}
                   onError={(error: Error) => {
                     console.error(error);
                     if (error.name === "NotAllowedError")
