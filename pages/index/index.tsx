@@ -53,10 +53,7 @@ export default function App() {
       .then(function (result) {
         loadingOverlayRef.current.style.display = "none";
         setIsDoneLoading(true);
-        if (result.credential) {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          // let token = result.credential;
-        }
+        
         let user = result.user;
         if (user.email.split("@")[1].split(".")[1] === "sst") {
           setTimeout(() => {
@@ -83,7 +80,7 @@ export default function App() {
           });
       })
       .catch(function (error) {
-        console.warn(`${error.message} (Ignore if you have yet to log in)`);
+        console.warn(`${error.message} (Please log in)`);
       });
   });
 
@@ -211,10 +208,18 @@ const svgImages = {
   checkmark: (
     <svg
       className={svgStyle.image}
+      style={{ boxShadow: "inset 0px 0px 0px 30px var(--fillGreen)" }}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 52 52"
     >
-      <circle className={svgStyle.circle} cx="26" cy="26" r="25" fill="none" />
+      <circle
+        className={svgStyle.circle}
+        style={{ stroke: "var(--borderGreen)" }}
+        cx="26"
+        cy="26"
+        r="25"
+        fill="none"
+      />
       <path
         className={svgStyle.symbol}
         fill="none"
@@ -225,10 +230,18 @@ const svgImages = {
   cross: (
     <svg
       className={svgStyle.image}
+      style={{ boxShadow: "inset 0px 0px 0px 30px var(--fillRed)" }}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 52 52"
     >
-      <circle className={svgStyle.circle} cx="26" cy="26" r="25" fill="none" />
+      <circle
+        className={svgStyle.circle}
+        style={{ stroke: "var(--borderRed)" }}
+        cx="26"
+        cy="26"
+        r="25"
+        fill="none"
+      />
       <line className={svgStyle.symbol} x1="35" y1="16" x2="16" y2="35"></line>
       <line className={svgStyle.symbol} x1="16" y1="16" x2="35" y2="35"></line>
     </svg>

@@ -1,4 +1,10 @@
 .image {
+  --fillGreen: #4da709;
+  --borderGreen: #429800;
+  --fillRed: #cb1b1b;
+  --borderRed: #a70909;
+  --default: #ebeb3e;
+
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -6,7 +12,7 @@
   stroke-width: 4;
   stroke: #fff;
   stroke-miterlimit: 10;
-  box-shadow: inset 0px 0px 0px #429800;
+  box-shadow: inset 0px 0px 0px 30px var(--default);
   animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
 }
 
@@ -15,7 +21,7 @@
   stroke-dashoffset: 166;
   stroke-width: 2;
   stroke-miterlimit: 10;
-  stroke: #429800;
+  stroke: var(--default);
   fill: none;
   animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
 }
@@ -37,11 +43,11 @@
     transform: none;
   }
   50% {
-    transform: scale3d(1.1, 1.1, 1);
+    transform: scale(1.1, 1.1);
   }
 }
 @keyframes fill {
   100% {
-    box-shadow: inset 0px 0px 0px 30px #4da709;
+    box-shadow: inset 0px 0px 0px 30px initial;
   }
 }
