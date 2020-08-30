@@ -12,70 +12,15 @@ import "firebase/auth";
 import "firebase/firestore";
 
 // import QrReader from "react-qr-reader"
-const QrReader = dynamic(() => import("react-qr-reader"), { ssr: false });
+const QrReader = dynamic(() => import("react-qr-reader"), {
+  ssr: false,
+});
 
 enum LoginStatus {
   None,
   Fail,
   Success,
 }
-
-const svgImages = {
-  checkmark: (
-    <svg
-      className={svgStyle.image}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 52 52"
-    >
-      <circle className={svgStyle.circle} cx="26" cy="26" r="25" fill="none" />
-      <path
-        className={svgStyle.symbol}
-        fill="none"
-        d="M14.1 27.2l7.1 7.2 16.7-16.8"
-      />
-    </svg>
-  ),
-  cross: (
-    <svg
-      className={svgStyle.image}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 52 52"
-    >
-      <circle className={svgStyle.circle} cx="26" cy="26" r="25" fill="none" />
-      <line className={svgStyle.symbol} x1="35" y1="16" x2="16" y2="35"></line>
-      <line className={svgStyle.symbol} x1="16" y1="16" x2="35" y2="35"></line>
-    </svg>
-  ),
-  loading: (
-    <svg
-      width="100"
-      height="100"
-      viewBox="0 0 100 100"
-      preserveAspectRatio="xMidYMid"
-      display="block"
-    >
-      <circle
-        cx="50"
-        cy="50"
-        fill="none"
-        stroke="#ff4a22"
-        strokeWidth="10"
-        r="35"
-        strokeDasharray="164.93361431346415 56.97787143782138"
-        transform="rotate(287.844 50 50)"
-      >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          repeatCount="indefinite"
-          dur="1s"
-          values="0 50 50;360 50 50"
-          keyTimes="0;1"
-        />
-      </circle>
-    </svg>
-  ),
-};
 
 export default function App() {
   const [debugMessage, updateDebugMessage] = useState(
@@ -135,7 +80,6 @@ export default function App() {
   });
 
   let loadingOverlayRef = useRef(null);
-  let qrScannerRef = useRef(null)
 
   const handleScan = (result: string) => {
     const twoDigitify = (value: number) => ("0" + value.toString()).slice(-2);
@@ -199,7 +143,6 @@ export default function App() {
               <p>Kindy scan the QR code provided to check-in to SST Inc.</p>
               {isDoneLoading ? (
                 <QrReader
-                  // ref={qrScannerRef}
                   delay={1000}
                   onError={handleError}
                   onScan={handleScan}
@@ -217,7 +160,6 @@ export default function App() {
                       ? "transparent"
                       : "#ff6c2d",
                 }}
-                // onClick={() => {qrScannerRef.current.openImageDialog()}}
               >
                 {debugMessage}
               </p>
@@ -255,3 +197,60 @@ export default function App() {
     </>
   );
 }
+
+const svgImages = {
+  checkmark: (
+    <svg
+      className={svgStyle.image}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 52 52"
+    >
+      <circle className={svgStyle.circle} cx="26" cy="26" r="25" fill="none" />
+      <path
+        className={svgStyle.symbol}
+        fill="none"
+        d="M14.1 27.2l7.1 7.2 16.7-16.8"
+      />
+    </svg>
+  ),
+  cross: (
+    <svg
+      className={svgStyle.image}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 52 52"
+    >
+      <circle className={svgStyle.circle} cx="26" cy="26" r="25" fill="none" />
+      <line className={svgStyle.symbol} x1="35" y1="16" x2="16" y2="35"></line>
+      <line className={svgStyle.symbol} x1="16" y1="16" x2="35" y2="35"></line>
+    </svg>
+  ),
+  loading: (
+    <svg
+      width="100"
+      height="100"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="xMidYMid"
+      display="block"
+    >
+      <circle
+        cx="50"
+        cy="50"
+        fill="none"
+        stroke="#ff4a22"
+        strokeWidth="10"
+        r="35"
+        strokeDasharray="164.93361431346415 56.97787143782138"
+        transform="rotate(287.844 50 50)"
+      >
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          repeatCount="indefinite"
+          dur="1s"
+          values="0 50 50;360 50 50"
+          keyTimes="0;1"
+        />
+      </circle>
+    </svg>
+  ),
+};
