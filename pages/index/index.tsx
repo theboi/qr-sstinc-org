@@ -84,18 +84,18 @@ export default function App() {
   const [loginStatus, updateLoginStatus] = useState(LoginStatus.None);
   const [isDoneLoading, setIsDoneLoading] = useState(false);
 
-  useEffect(() => {
-    const firebaseConfig = {
-      apiKey: process.env.GOOGLE_API_KEY,
-      authDomain: "qr-sstinc-org.firebaseapp.com",
-      databaseURL: "https://qr-sstinc-org.firebaseio.com",
-      projectId: "qr-sstinc-org",
-      storageBucket: "qr-sstinc-org.appspot.com",
-      messagingSenderId: "94752341969",
-      appId: "1:94752341969:web:a894d3477159dae17aaaf0",
-      measurementId: "G-NT19WZM37B",
-    };
+  const firebaseConfig = {
+    apiKey: process.env.GOOGLE_API_KEY,
+    authDomain: "qr-sstinc-org.firebaseapp.com",
+    databaseURL: "https://qr-sstinc-org.firebaseio.com",
+    projectId: "qr-sstinc-org",
+    storageBucket: "qr-sstinc-org.appspot.com",
+    messagingSenderId: "94752341969",
+    appId: "1:94752341969:web:a894d3477159dae17aaaf0",
+    measurementId: "G-NT19WZM37B",
+  };
 
+  useEffect(() => {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
@@ -106,7 +106,6 @@ export default function App() {
       .then(function (result) {
         loadingOverlayRef.current.style.display = "none";
         setIsDoneLoading(true);
-
         if (result.credential) {
           // This gives you a Google Access Token. You can use it to access the Google API.
           // let token = result.credential;
@@ -136,6 +135,34 @@ export default function App() {
   });
 
   let loadingOverlayRef = useRef(null);
+  let qrScannerRef = useRef(null)
+
+  const handleScan = (result: string) => {
+    const twoDigitify = (value: number) => ("0" + value.toString()).slice(-2);
+    const date = new Date();
+    const hashed = hash(
+      `sstinc${twoDigitify(date.getDate())}${twoDigitify(
+        date.getMonth() + 1
+      )}${twoDigitify(date.getFullYear())}`
+    ).toString();
+    console.log(date.getMonth());
+    if (result === hashed) {
+      console.log("pass");
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithRedirect(provider);
+    }
+  };
+
+  const handleError = (error: Error) => {
+    console.error(error);
+    if (error.name === "NotAllowedError")
+      return updateDebugMessage(`Error: Camera Disabled`);
+    else if (error.name === "NoVideoInputDevicesError")
+      return updateDebugMessage(
+        `Error: Camera Not Found (Use Safari if on iOS)`
+      );
+    updateDebugMessage(`Error: ${error.name}`);
+  };
 
   return (
     <>
@@ -172,33 +199,10 @@ export default function App() {
               <p>Kindy scan the QR code provided to check-in to SST Inc.</p>
               {isDoneLoading ? (
                 <QrReader
+                  // ref={qrScannerRef}
                   delay={1000}
-                  onError={(error: Error) => {
-                    console.error(error);
-                    if (error.name === "NotAllowedError")
-                      return updateDebugMessage(`Error: Camera Disabled`);
-                    else if (error.name === "NoVideoInputDevicesError")
-                      return updateDebugMessage(
-                        `Error: Camera Not Found (Use Safari if on iOS)`
-                      );
-                    updateDebugMessage(`Error: ${error.name}`);
-                  }}
-                  onScan={(result) => {
-                    const twoDigitify = (value: number) =>
-                      ("0" + value.toString()).slice(-2);
-                    const date = new Date();
-                    const hashed = hash(
-                      `sstinc${twoDigitify(date.getDate())}${twoDigitify(
-                        date.getMonth() + 1
-                      )}${twoDigitify(date.getFullYear())}`
-                    ).toString();
-                    console.log(date.getMonth());
-                    if (result === hashed) {
-                      console.log("pass");
-                      var provider = new firebase.auth.GoogleAuthProvider();
-                      firebase.auth().signInWithRedirect(provider);
-                    }
-                  }}
+                  onError={handleError}
+                  onScan={handleScan}
                   className={style.qr}
                 />
               ) : (
@@ -213,6 +217,7 @@ export default function App() {
                       ? "transparent"
                       : "#ff6c2d",
                 }}
+                // onClick={() => {qrScannerRef.current.openImageDialog()}}
               >
                 {debugMessage}
               </p>
@@ -224,7 +229,7 @@ export default function App() {
         )}
         <div className={style.credits}>
           <p>
-            Made with ♥ by{" "}
+            Made with ♥&#xFE0E; by{" "}
             <a
               href="https://www.ryanthe.com"
               target="_blank"
@@ -236,7 +241,11 @@ export default function App() {
           </p>
           <p>
             Open sourced on{" "}
-            <a href="https://github.com/theboi/qr-sstinc-org" target="_blank" className={style.link}>
+            <a
+              href="https://github.com/theboi/qr-sstinc-org"
+              target="_blank"
+              className={style.link}
+            >
               GitHub
             </a>
             .{" "}
