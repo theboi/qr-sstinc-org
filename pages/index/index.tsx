@@ -22,6 +22,8 @@ enum LoginStatus {
   Success,
 }
 
+let currentUserEmail = "";
+
 export default function App() {
   const [debugMessage, updateDebugMessage] = useState(
     `If you're reading this its too late...`
@@ -56,7 +58,12 @@ export default function App() {
           // let token = result.credential;
         }
         let user = result.user;
-        console.log(user);
+        if (user.email.split("@")[1].split(".")[1] === "sst") {
+          setTimeout(() => {
+            window.location.href =
+              "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+          }, 5000);
+        }
         firebase
           .firestore()
           .collection(`users`)
@@ -66,6 +73,7 @@ export default function App() {
             date: firebase.firestore.Timestamp.fromDate(new Date()),
           })
           .then((docRef) => {
+            currentUserEmail = user.email;
             updateLoginStatus(LoginStatus.Success);
             console.log(`Successful document written with ID: ${docRef.id}`);
           })
@@ -126,6 +134,7 @@ export default function App() {
               <h3>
                 {loginStatus === LoginStatus.Success ? "Success" : "Failed"}
               </h3>
+              {currentUserEmail}
               <p>
                 {loginStatus === LoginStatus.Success
                   ? "You may leave the site now."
