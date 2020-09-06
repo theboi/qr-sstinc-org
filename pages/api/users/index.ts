@@ -2,9 +2,9 @@
  * API Endpoint for spreadsheet to receive authenticated users.
  */
 
-export default (req, res) => {
-  res.statusCode = 200;
+import { NextApiResponse, NextApiRequest } from "next";
 
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const admin = require("firebase-admin");
 
   /**
@@ -50,9 +50,11 @@ export default (req, res) => {
           Name: data.displayName,
         };
       });
+      res.statusCode = 200;
       res.json(output);
     })
     .catch((e: Error) => {
+      res.statusCode = 404;
       console.error("ERROR: ", e);
     });
 };
