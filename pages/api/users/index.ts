@@ -1,8 +1,15 @@
+/**
+ * API Endpoint for spreadsheet to receive authenticated users.
+ */
+
 export default (req, res) => {
   res.statusCode = 200;
 
   const admin = require("firebase-admin");
 
+  /**
+   * Provided by Firebase for using Firebase APIs. To be passed as argument when initializing app.
+   */
   const serviceAccount = {
     type: "service_account",
     project_id: "qr-sstinc-org",
@@ -32,6 +39,10 @@ export default (req, res) => {
         let data = value.data();
 
         return {
+          /**
+           * Forces data.date to SGT time format. If excluded, time will
+           * be shown in UTC during production.
+           */
           "Timestamp (SGT)": data.date
             .toDate()
             .toLocaleString("en-SG", { timeZone: "Asia/Singapore" }),
@@ -42,6 +53,6 @@ export default (req, res) => {
       res.json(output);
     })
     .catch((e: Error) => {
-      console.error("ERROR", e);
+      console.error("ERROR: ", e);
     });
 };

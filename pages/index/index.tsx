@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, ReactNode } from "react";
 import dynamic from "next/dynamic";
 
 import style from "./style.module.css";
@@ -11,16 +11,25 @@ import "firebase/analytics";
 import "firebase/auth";
 import "firebase/firestore";
 
-// import QrReader from "react-qr-reader"
+/** QrReader React component, dynamically imported with ssr: false from "react-qr-reader". */
 const QrReader = dynamic(() => import("react-qr-reader"), {
   ssr: false,
 });
 
+/**  */
 enum LoginStatus {
   None,
   Fail,
   Success,
 }
+
+/**
+ * Helper function which takes a number and returns it sliced to two digits.
+ * @param {number} value A number to be spliced to two digits.
+ * @returns {number} The number sliced to two digits.
+ */
+export const sliceTwoDigit = (value: number) =>
+  ("0" + value.toString()).slice(-2);
 
 let currentUserEmail = "";
 
@@ -31,6 +40,9 @@ export default function App() {
   const [loginStatus, updateLoginStatus] = useState(LoginStatus.None);
   const [isDoneLoading, setIsDoneLoading] = useState(false);
 
+  /**
+   * Provided by Firebase for using Firebase APIs. To be passed as argument when initializing app.
+   */
   const firebaseConfig = {
     apiKey: process.env.GOOGLE_API_KEY,
     authDomain: "qr-sstinc-org.firebaseapp.com",
@@ -53,7 +65,7 @@ export default function App() {
       .then(function (result) {
         loadingOverlayRef.current.style.display = "none";
         setIsDoneLoading(true);
-        
+
         let user = result.user;
         if (user.email.split("@")[1].split(".")[1] === "sst") {
           setTimeout(() => {
@@ -87,12 +99,11 @@ export default function App() {
   let loadingOverlayRef = useRef(null);
 
   const handleScan = (result: string) => {
-    const twoDigitify = (value: number) => ("0" + value.toString()).slice(-2);
     const date = new Date();
     const hashed = hash(
-      `sstinc${twoDigitify(date.getDate())}${twoDigitify(
+      `sstinc${sliceTwoDigit(date.getDate())}${sliceTwoDigit(
         date.getMonth() + 1
-      )}${twoDigitify(date.getFullYear())}`
+      )}${sliceTwoDigit(date.getFullYear())}`
     ).toString();
     console.log(date.getMonth());
     if (result === hashed) {
@@ -138,7 +149,7 @@ export default function App() {
                   : "Inform a SST Inc. EXCO and try again."}
               </p>
               {loginStatus === LoginStatus.Success
-                ? svgImages.checkmark
+                ? svgImages.checkMark
                 : svgImages.cross}
             </div>
           </>
@@ -146,7 +157,7 @@ export default function App() {
           <>
             <div className={style.contentDiv}>
               <h3>SST Inc Attendance Scanner</h3>
-              <p>Kindy scan the QR code provided to check-in to SST Inc.</p>
+              <p>Kindly scan the QR code provided to check-in to SST Inc.</p>
               {isDoneLoading ? (
                 <QrReader
                   delay={1000}
@@ -204,8 +215,9 @@ export default function App() {
   );
 }
 
+/** Object containing inline SVG images in JSX */
 const svgImages = {
-  checkmark: (
+  checkMark: (
     <svg
       className={svgStyle.image}
       style={{ boxShadow: "inset 0px 0px 0px 30px var(--fillGreen)" }}
