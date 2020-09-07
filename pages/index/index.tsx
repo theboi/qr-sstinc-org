@@ -16,7 +16,7 @@ const QrReader = dynamic(() => import("react-qr-reader"), {
   ssr: false,
 });
 
-/**  */
+/** @enum {number} Login states for authentication to Firebase and platform */
 enum LoginStatus {
   None,
   Fail,
@@ -24,12 +24,24 @@ enum LoginStatus {
 }
 
 /**
- * Helper function which takes a number and returns it sliced to two digits.
- * @param {number} value A number to be spliced to two digits.
- * @returns {number} The number sliced to two digits.
+ * Returns truncated numbers to two digits.
+ * @param {number} value A number to be truncated to two digits.
+ * @returns {number} The truncated number.
  */
-export const sliceTwoDigit = (value: number) =>
-  ("0" + value.toString()).slice(-2);
+export const getTruncatedDate = (value: number): number =>
+  parseInt(("0" + value.toString()).slice(-2));
+
+/**
+ * Returns key string to be hashed.
+ * @param {string} nonce A nonce string (as used in cryptography).
+ * @param {Date} date Date object to get numbers from.
+ * @returns {string} The key from date.
+ */
+export const getKeyString = (nonce: string, date: Date): string => {
+  return `${nonce}${getTruncatedDate(date.getDate())}${getTruncatedDate(
+    date.getMonth() + 1
+  )}${getTruncatedDate(date.getFullYear())}`;
+};
 
 let currentUserEmail = "";
 
@@ -99,13 +111,7 @@ export default function App() {
   let loadingOverlayRef = useRef(null);
 
   const handleScan = (result: string) => {
-    const date = new Date();
-    const hashed = hash(
-      `sstinc${sliceTwoDigit(date.getDate())}${sliceTwoDigit(
-        date.getMonth() + 1
-      )}${sliceTwoDigit(date.getFullYear())}`
-    ).toString();
-    console.log(date.getMonth());
+    const hashed = hash(getKeyString("sstinc", new Date())).toString();
     if (result === hashed) {
       console.log("pass");
       var provider = new firebase.auth.GoogleAuthProvider();
