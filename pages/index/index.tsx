@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, ReactNode } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 
 import style from "./style.module.css";
@@ -7,7 +7,6 @@ import svgStyle from "./svgImages.module.css";
 import hash from "crypto-js/sha256";
 
 import * as firebase from "firebase/app";
-import "firebase/analytics";
 import "firebase/auth";
 import "firebase/firestore";
 
@@ -43,6 +42,21 @@ export const getKeyString = (nonce: string, date: Date): string => {
   )}${getTruncatedDate(date.getFullYear())}`;
 };
 
+/**
+ * Provided by Firebase for API usage.
+ */
+const firebaseConfig = {
+  apiKey: process.env.GOOGLE_API_KEY,
+  authDomain: "qr-sstinc-org.firebaseapp.com",
+  databaseURL: "https://qr-sstinc-org.firebaseio.com",
+  projectId: "qr-sstinc-org",
+  storageBucket: "qr-sstinc-org.appspot.com",
+  messagingSenderId: "94752341969",
+  appId: "1:94752341969:web:a894d3477159dae17aaaf0",
+  measurementId: "G-NT19WZM37B",
+};
+
+/** Stores email of currently authenticated user after logging in */
 let currentUserEmail = "";
 
 export default function App() {
@@ -52,27 +66,15 @@ export default function App() {
   const [loginStatus, updateLoginStatus] = useState(LoginStatus.None);
   const [isDoneLoading, setIsDoneLoading] = useState(false);
 
-  /**
-   * Provided by Firebase for using Firebase APIs. To be passed as argument when initializing app.
-   */
-  const firebaseConfig = {
-    apiKey: process.env.GOOGLE_API_KEY,
-    authDomain: "qr-sstinc-org.firebaseapp.com",
-    databaseURL: "https://qr-sstinc-org.firebaseio.com",
-    projectId: "qr-sstinc-org",
-    storageBucket: "qr-sstinc-org.appspot.com",
-    messagingSenderId: "94752341969",
-    appId: "1:94752341969:web:a894d3477159dae17aaaf0",
-    measurementId: "G-NT19WZM37B",
-  };
+  const auth = firebase.auth;
+  const db = firebase.firestore;
 
   useEffect(() => {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
 
-    firebase
-      .auth()
+    auth()
       .getRedirectResult()
       .then(function (result) {
         loadingOverlayRef.current.style.display = "none";
@@ -85,13 +87,11 @@ export default function App() {
               "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
           }, 5000);
         }
-        firebase
-          .firestore()
-          .collection(`users`)
+        db().collection(`users`)
           .add({
             displayName: user.displayName,
             emailAddress: user.email,
-            date: firebase.firestore.Timestamp.fromDate(new Date()),
+            date: db.Timestamp.fromDate(new Date()),
           })
           .then((docRef) => {
             currentUserEmail = user.email;
@@ -114,8 +114,8 @@ export default function App() {
     const hashed = hash(getKeyString("sstinc", new Date())).toString();
     if (result === hashed) {
       console.log("pass");
-      var provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithRedirect(provider);
+      var provider = new auth.GoogleAuthProvider();
+      auth().signInWithRedirect(provider);
     }
   };
 
