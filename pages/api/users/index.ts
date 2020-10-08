@@ -1,7 +1,6 @@
 /**
  * API Endpoint for spreadsheet to receive authenticated users.
  */
-
 import { NextApiResponse, NextApiRequest } from "next";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -37,7 +36,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .then((col) => {
       const output = col.docs.map((value) => {
         let data = value.data();
-
         return {
           /**
            * Forces data.date to SGT time format. If excluded, time will
@@ -50,11 +48,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           Name: data.displayName,
         };
       });
-      res.statusCode = 200;
-      res.json(output);
+      res.status(200).json(output);
     })
     .catch((e: Error) => {
-      res.statusCode = 404;
+      res.status(404).send("Not found")
       console.error("ERROR: ", e);
     });
 };
